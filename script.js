@@ -8,6 +8,8 @@ snake[0] = {
     y: 8 * box
 }
 
+let jogo;
+
 let direction = "right";
 let food = {
     x: Math.floor(Math.random() * 15 + 1) * box,
@@ -15,7 +17,7 @@ let food = {
 }
 
 function criarBG() {
-    context.fillStyle = "lightgreen";
+    context.fillStyle = "#0e4400";
     context.fillRect(0, 0, 16 * box, 16 * box);
 }
 
@@ -31,6 +33,21 @@ function drawFood() {
     context.fillRect(food.x, food.y, box, box);
 }
 
+function iniciarJogo(condition) {
+    if (condition == true) {
+        document.getElementById("snake").style.visibility = 'visible';
+        document.getElementById("btn").style.visibility = 'hidden';
+        jogo = setInterval(nucleoJogo, 100);
+    } else {
+        clearInterval(jogo);
+        alert("Game Over :(");
+        document.getElementById("btn").style.visibility = 'visible';
+        snake = [];
+        snake[0] = { x: 8 * box, y: 8 * box };
+        document.getElementById("snake").style.visibility = 'hidden';
+    }
+}
+
 document.addEventListener('keydown', update);
 
 function update(event) {
@@ -41,7 +58,7 @@ function update(event) {
     if (event.keyCode == 40 && direction != "up") direction = "down";
 }
 
-function iniciarJogo() {
+function nucleoJogo() {
 
     if (snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
     if (snake[0].x < 0 && direction == "left") snake[0].x = 16 * box;
@@ -50,8 +67,7 @@ function iniciarJogo() {
 
     for (i = 1; i < snake.length; i++) {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
-            clearInterval(jogo);
-            alert("Game Over :(");
+            iniciarJogo(false);
         }
     }
 
@@ -83,4 +99,4 @@ function iniciarJogo() {
 
 }
 
-let jogo = setInterval(iniciarJogo, 100);
+// let jogo = setInterval(iniciarJogo, 100);
